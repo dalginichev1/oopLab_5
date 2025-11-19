@@ -1,3 +1,0 @@
-/home/daalginichev/oopLab_5/build/CMakeFiles/List.dir
-/home/daalginichev/oopLab_5/build/CMakeFiles/edit_cache.dir
-/home/daalginichev/oopLab_5/build/CMakeFiles/rebuild_cache.dir
