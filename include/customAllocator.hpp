@@ -3,7 +3,7 @@
 #include <list>
 #include <memory_resource>
 
-class FixedCustomMemoryResource : public stdcl::pmr::memory_resource {
+class FixedCustomMemoryResource : public std::pmr::memory_resource {
   private:
     struct MemoryBlock {
         size_t size = 0;
@@ -17,6 +17,7 @@ class FixedCustomMemoryResource : public stdcl::pmr::memory_resource {
     char* memory_pool;
     size_t pool_size;
     std::list<MemoryBlock> blocks;
+    size_t current_offset = 0;
 
   protected:
     void* do_allocate(size_t bytes, size_t align) override;

@@ -11,7 +11,6 @@ FixedCustomMemoryResource::~FixedCustomMemoryResource() {
 }
 
 void* FixedCustomMemoryResource::do_allocate(size_t bytes, size_t align) {
-
     for (auto& block : blocks) {
         if (!block.is_allocated && block.size >= bytes) {
             block.is_allocated = true;
@@ -19,10 +18,15 @@ void* FixedCustomMemoryResource::do_allocate(size_t bytes, size_t align) {
         }
     }
 
-    void* new_ptr = ::operator new(bytes);
+    if (current_offset + bytes <= pool_size) {
+        void* ptr = memory_pool + current_offset;
+        current_offset += bytes;
 
-    blocks.emplace_back(new_ptr, bytes, true);
-    return new_ptr;
+        blocks.emplace_back(ptr, bytes, true);
+        return ptr;
+    }
+
+    throw std::bad_alloc();
 }
 
 void FixedCustomMemoryResource::do_deallocate(void* ptr, size_t bytes, size_t align) {
