@@ -1,67 +1,64 @@
 #pragma once
 
-#include <memory_resource>
 #include <iterator>
+#include <memory_resource>
 
 template <typename T>
-class ForwardList
-{
-    private:
-        struct Node
-        {
-            T data;
-            Node* next;
+class ForwardList {
+  private:
+    struct Node {
+        T data;
+        Node* next;
 
-            Node(const T& value);
-            Node(T&& value) noexcept;
-        };
+        Node(const T& value);
+        Node(T&& value) noexcept;
+    };
 
-        Node* head;
-        std::pmr::polymorphic_allocator<Node> allocator;
-    
-    public:
-        class Iterator 
-        {
-            private:
-                Node* it;
-            
-            public:
-                using iterator_category = std::forward_iterator_tag;
-                using value_type = T;
-                using difference_type = std::ptrdiff_t;
-                using pointer = T*;
-                using reference = T&;
+    Node* head;
+    std::pmr::polymorphic_allocator<Node> allocator;
 
-                Iterator();
-                Iterator(Node* node);
+  public:
+    class Iterator {
+      private:
+        Node* it;
 
-                reference operator*() const;
-                pointer operator->() const;
+      public:
+        using iterator_category = std::forward_iterator_tag;
+        using value_type = T;
+        using difference_type = std::ptrdiff_t;
+        using pointer = T*;
+        using reference = T&;
 
-                Iterator& operator++();
-                Iterator operator++(int);
+        Iterator();
+        Iterator(Node* node);
 
-                bool operator==(const Iterator& other) const;
-                bool operator!=(const Iterator& other) const;
-        };
+        reference operator*() const;
+        pointer operator->() const;
 
-        using iterator = Iterator;
-        using const_iterator = Iterator;
+        Iterator& operator++();
+        Iterator operator++(int);
 
-        ForwardList(std::pmr::memory_resource* resource);
-        ~ForwardList();
+        bool operator==(const Iterator& other) const;
+        bool operator!=(const Iterator& other) const;
+    };
 
-        void push_front(const T& value);
-        void push_front(T&& value);
-        void pop_front();
-        void clear();
+    using iterator = Iterator;
+    using const_iterator = Iterator;
 
-        Iterator begin();
-        Iterator end();
-        Iterator begin() const;
-        Iterator end() const;
+    ForwardList(std::pmr::memory_resource* resource);
+    ~ForwardList();
 
-        bool empty() const;
+    void push_front(const T& value);
+    void push_front(T&& value);
+    void pop_front();
+    void clear();
+
+    Iterator begin();
+    Iterator end();
+    Iterator begin() const;
+    Iterator end() const;
+
+    bool empty() const;
 };
 
 #include "forwardList.ipp"
