@@ -16,3 +16,17 @@ add_executable(List
 )
 
 target_include_directories(List PRIVATE include impl)
+
+add_executable(list_tests
+    test/listTest.cpp
+    test/main.cpp
+    src/customAllocator.cpp
+    ${HEADER_FILES}
+    ${IMPL_FILES}
+)
+
+target_link_libraries(list_tests GTest::gtest GTest::gtest_main)
+target_include_directories(list_tests PRIVATE include impl)
+
+include(GoogleTest)
+gtest_discover_tests(list_tests)
